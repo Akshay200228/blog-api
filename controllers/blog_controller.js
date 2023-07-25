@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import Blog from "../models/Blog";
+import User from "../models/User";
 
 export const getAllBlogs = async (req, res, next) => {
     try {
@@ -16,6 +18,17 @@ export const getAllBlogs = async (req, res, next) => {
 
 export const addBlogs = async (req, res, next) => {
     const { title, description, image, user } = req.body;
+    let existingUser; // Declare the variable here
+
+    try {
+        existingUser = await User.findById(user);
+        if (!existingUser) {
+            return res.status(400).json({ message: "Unable To Find User By This ID" });
+        }
+    } catch (err) {
+        console.error("Error while finding user by ID:", err);
+        return res.status(500).json({ message: "Server Error" });
+    }
 
     const blog = new Blog({
         title,
@@ -25,12 +38,20 @@ export const addBlogs = async (req, res, next) => {
     });
 
     try {
-        await blog.save();
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        await blog.save({ session });
+        existingUser.blogs.push(blog);
+        await existingUser.save({ session });
+        await session.commitTransaction();
+        console.log("Blog saved and associated with user:", blog);
     } catch (err) {
+        console.error("Error while adding a blog:", err);
         return res.status(500).json({ message: "Server Error" });
     }
-    return res.status(200).json({ blog })
-}
+    return res.status(200).json({ blog });
+};
+
 
 export const updateBlogs = async (req, res, next) => {
     const { title, description } = req.body;
