@@ -9,6 +9,16 @@ dotenv.config();
 
 const app = express();
 
+app.get('/', (req, res) => {
+    res.send(`
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <h1>Welcome to my Express App</h1>
+        <h2>This is the home page of Blog Api App.</h2>
+      </div>
+    `);
+});
+
+
 // Users routes
 app.use(express.json());
 app.use("/api/user", router);
@@ -21,6 +31,3 @@ mongoose.connect(process.env.MONGO).then(
 ).then(
     () => console.log("Connected To DataBase and Listening to localhost:5000")
 ).catch((err) => console.log(err))
-
-
-
