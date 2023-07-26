@@ -2,6 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import router from './routes/user_routes';
 import blogRouter from './routes/blog_routes';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 
@@ -12,9 +16,7 @@ app.use("/api/user", router);
 // Blogs routes
 app.use("/api/Blogs", blogRouter)
 
-mongoose.connect(
-    "mongodb+srv://admin:admin@cluster0.birau1y.mongodb.net/Blog?retryWrites=true&w=majority"
-).then(
+mongoose.connect(process.env.MONGO).then(
     () => app.listen(5000)
 ).then(
     () => console.log("Connected To DataBase and Listening to localhost:5000")
