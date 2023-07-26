@@ -14,9 +14,20 @@ app.get('/', (req, res) => {
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <h1>Welcome to my Express App</h1>
         <h2>This is the home page of Blog Api App.</h2>
+        <h3>API Routes:</h3>
+        <p>- GET all users: /api/user</p>
+        <p>- POST signup: /api/user/signup</p>
+        <p>- POST login: /api/user/login</p>
+        <p>- GET all blogs: /api/Blogs</p>
+        <p>- POST add blog: /api/Blogs/add</p>
+        <p>- PUT update blog: /api/Blogs/update/:id</p>
+        <p>- GET blog by ID: /api/Blogs/:id</p>
+        <p>- DELETE blog by ID: /api/Blogs/:id</p>
+        <p>- GET blogs by User ID: /api/Blogs/user/:id</p>
       </div>
     `);
 });
+
 
 
 // Users routes
